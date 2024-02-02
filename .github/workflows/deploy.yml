@@ -1,4 +1,4 @@
-name: CI/CD
+name: Deploy
 
 on:
   push:
@@ -29,9 +29,7 @@ jobs:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USERNAME }}
           password: ${{ secrets.VPS_SSH_KEY }}
-          port: 22
+          port: 2210
           script: |
             cd applications/icore
-            git pull origin dev
-            docker-compose down
-            docker-compose up --build -d
+            git pull origin master
