@@ -28,6 +28,7 @@ jobs:
         with:
           host: ${{ secrets.VPS_IP }}
           username: ${{ secrets.VPS_USERNAME }}
+          ## jangan lupa cat id_25119.pub >> authorized_keys
           key: ${{ secrets.VPS_SSH_KEY }}
           port: 2210
           script: |
