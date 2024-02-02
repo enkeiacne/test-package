@@ -1,0 +1,37 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Set Up Node JS
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" 
+      
+      - name: Install dependensie
+        run: |
+          npm install -g pnpm
+          pnpm install
+      
+      - name: SSH and Deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.VPS_IP }}
+          username: ${{ secrets.VPS_USERNAME }}
+          password: ${{ secrets.VPS_SSH_KEY }}
+          port: 22
+          script: |
+            cd applications/icore
+            git pull origin dev
+            docker-compose down
+            docker-compose up --build -d
